@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.mita.ui.screen.welcome.WelcomeScreen
 import com.example.mita.ui.theme.MITATheme
 
 class MainActivity : ComponentActivity() {
