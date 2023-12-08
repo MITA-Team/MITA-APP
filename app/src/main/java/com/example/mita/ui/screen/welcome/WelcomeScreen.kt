@@ -14,20 +14,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.rememberNavController
 import com.example.mita.navigation.Screen
+import com.example.mita.ui.screen.register.RegisterScreen
 
 @Composable
 fun WelcomeScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
-    navController : NavController = rememberNavController()
+
 ){
     Box(
         modifier = modifier.fillMaxSize()
-    ){
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -43,7 +49,7 @@ fun WelcomeScreen(
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-           /* Image(painter = painterResource(id = R.drawable.logo_mita),
+            /* Image(painter = painterResource(id = R.drawable.logo_mita),
                 contentDescription = null,
                 modifier = Modifier
                     .height(320.dp)
@@ -52,7 +58,8 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.padding(8.dp))
 
             Row {
-                Button(onClick = { navController.navigate(Screen.Login.route) },
+                Button(
+                    onClick = { navController.navigate(Screen.Login.route) },
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(),
                     modifier = Modifier
@@ -60,12 +67,13 @@ fun WelcomeScreen(
                 ) {
 
                     Text(
-                        "Sign In"
+                        "Log In"
                     )
 
                 }
 
-                Button(onClick = { navController.navigate(Screen.Register.route) },
+                Button(
+                    onClick = { navController.navigate(Screen.Register.route) },
                     shape = MaterialTheme.shapes.large,
                     colors = ButtonDefaults.buttonColors(),
                     modifier = Modifier
@@ -80,4 +88,11 @@ fun WelcomeScreen(
             }
         }
     }
+
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun RegisterScreenPreview(){
+//    WelcomeScreen(navCont)
+//}
