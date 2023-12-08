@@ -17,10 +17,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,17 +26,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mita.R
+import com.example.mita.navigation.Screen
 
 @Composable
 fun LoginScreen(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
 ){
 
-    var edit = remember{ mutableStateOf("") }
+    val edit = remember{ mutableStateOf("") }
 
     Box(modifier = modifier.fillMaxSize()){
         Column(
@@ -78,8 +78,8 @@ fun LoginScreen(
             )
 
             TextField(
-                value = "",
-                onValueChange = {},
+                value ="",
+                onValueChange = {  },
                 label = {
                     Text(
                         text = stringResource(id = R.string.passwordText)
@@ -98,7 +98,7 @@ fun LoginScreen(
                 )
             )
 
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(Screen.Home.route) },
                 shape = MaterialTheme.shapes.large,
                 colors = ButtonDefaults.buttonColors(),
                 modifier = Modifier
@@ -114,8 +114,8 @@ fun LoginScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview(){
-    LoginScreen()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun LoginScreenPreview(){
+//    LoginScreen()
+//}

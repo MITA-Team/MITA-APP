@@ -38,18 +38,22 @@ fun MITAApp(
     navController: NavHostController = rememberNavController()
 ) {
 
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
-//    val currentRoute = navBackStackEntry?.destination?.route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
         modifier = modifier,
-//        bottomBar = {
-//                BottomBar(navController = navController)
-//        },
+        bottomBar = {
+            if (currentRoute != Screen.Welcome.route &&
+                currentRoute != Screen.Login.route &&
+                currentRoute != Screen.Register.route) {
+                BottomBar(navController)
+            }
+        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "main",
+            startDestination = "authentication",
             modifier = Modifier
                 .padding(innerPadding)
                 .statusBarsPadding()
@@ -69,77 +73,83 @@ fun MITAApp(
                 ) {
                     ProfileScreen()
                 }
+            }
+
+            //without bottom bar
+            navigation(
+                startDestination = Screen.Welcome.route,
+                route = "authentication"
+            ) {
                 composable(
                     route = Screen.Welcome.route
-                ){
+                ) {
                     WelcomeScreen(navController)
                 }
                 composable(
                     route = Screen.Login.route
-                ){
-                    LoginScreen()
+                ) {
+                    LoginScreen(navController)
                 }
                 composable(
                     route = Screen.Register.route
-                ){
-                    RegisterScreen()
+                ) {
+                    RegisterScreen(navController)
                 }
             }
-
         }
     }
 }
-//
-//@Composable
-//private fun BottomBar(
-//    navController: NavHostController,
-//    modifier: Modifier = Modifier
-//) {
-//    NavigationBar(
-//        modifier = modifier,
-//    ) {
-//        val navBackStackEntry by navController.currentBackStackEntryAsState()
-//        val currentRoute = navBackStackEntry?.destination?.route
-//        val navigationItems = listOf(
-//            NavigationItem(
-//                title = stringResource(R.string.menu_home),
-//                icon = Icons.Default.Home,
-//                screen = Screen.Home
-//            ),
-//            NavigationItem(
-//                title = stringResource(R.string.menu_activity),
-//                icon = Icons.Default.Face,
-//                screen = Screen.Activity
-//            ),
-//            NavigationItem(
-//                title = stringResource(R.string.menu_profile),
-//                icon = Icons.Default.Person,
-//                screen = Screen.Profile
-//            ),
-//        )
-//        navigationItems.map { item ->
-//            NavigationBarItem(
-//                icon = {
-//                    Icon(
-//                        imageVector = item.icon,
-//                        contentDescription = item.title
-//                    )
-//                },
-//                label = { Text(item.title) },
-//                selected = currentRoute == item.screen.route,
-//                onClick = {
-//                    navController.navigate(item.screen.route) {
-//                        popUpTo(navController.graph.findStartDestination().id) {
-//                            saveState = true
-//                        }
-//                        restoreState = true
-//                        launchSingleTop = true
-//                    }
-//                }
-//            )
-//        }
-//    }
-//}
+
+@Composable
+private fun BottomBar(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavigationBar(
+        modifier = modifier,
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        val navigationItems = listOf(
+            NavigationItem(
+                title = stringResource(R.string.menu_home),
+                icon = Icons.Default.Home,
+                screen = Screen.Home
+            ),
+            NavigationItem(
+                title = stringResource(R.string.menu_activity),
+                icon = Icons.Default.Face,
+                screen = Screen.Activity
+            ),
+            NavigationItem(
+                title = stringResource(R.string.menu_profile),
+                icon = Icons.Default.Person,
+                screen = Screen.Profile
+            ),
+        )
+        navigationItems.map { item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.title
+                    )
+                },
+                label = { Text(item.title) },
+                selected = currentRoute == item.screen.route,
+                onClick = {
+                    navController.navigate(item.screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+    }
+}
 
 @Preview
 @Composable
