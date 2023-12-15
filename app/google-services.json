@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "929058924004",
+    "firebase_url": "https://latihan-capstone-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "latihan-capstone",
+    "storage_bucket": "latihan-capstone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929058924004:android:891a4e4ecf1becd66d13f1",
+        "android_client_info": {
+          "package_name": "com.example.mita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929058924004-2ajtan72boqpn33l1htntr8siiv1csr5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdrIR8jqS3t9zKW7R847s3gGka4cre9Nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929058924004-2ajtan72boqpn33l1htntr8siiv1csr5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
