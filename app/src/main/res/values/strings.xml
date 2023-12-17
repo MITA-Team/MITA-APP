@@ -25,4 +25,5 @@
     <string name="emailText">Email</string>
     <string name="menu_activity">Activity\n</string>
     <string name="menu_profile">Profile</string>
+    <string name="google_cloud_server_client_id">Google Server</string>
 </resources>
