@@ -21,4 +21,8 @@
 
     <string name="forget_password">Forget your Password</string>
     <string name="home">Home</string>
+    <string name="passwordText">Password</string>
+    <string name="emailText">Email</string>
+    <string name="menu_activity">Activity\n</string>
+    <string name="menu_profile">Profile</string>
 </resources>

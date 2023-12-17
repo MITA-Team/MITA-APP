@@ -72,6 +72,8 @@ class RegisterViewModel : ViewModel() {
                 }
 
             }
+
+            else -> {}
         }
 
     }

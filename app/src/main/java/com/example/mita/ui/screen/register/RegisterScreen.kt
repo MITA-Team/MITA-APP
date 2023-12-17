@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.mita.R
 import com.example.mita.navigation.MitaAppRouter
 import com.example.mita.navigation.Screen
@@ -37,13 +38,11 @@ import com.example.mita.ui.screen.register.data.RegisterUIEvent
 import com.example.mita.ui.screen.register.data.RegisterViewModel
 
 @Composable
-fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
+fun RegisterScreen(
+    navController: NavHostController,
+    registerViewModel: RegisterViewModel = viewModel()
+) {
     val context = LocalContext.current
-
-
-    SystemBackButtonHandler {
-        MitaAppRouter.navigateTo(Screen.LoginScreen)
-    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -140,7 +139,7 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
                 ClickableLoginTextComponent(
                     value = stringResource(id = R.string.already_login),
                     onTextSelected = {
-                        MitaAppRouter.navigateTo(Screen.LoginScreen)
+                        navController.navigate(Screen.LoginScreen.toString())
                     })
             }
         }
@@ -153,8 +152,8 @@ fun RegisterScreen(registerViewModel: RegisterViewModel = viewModel()) {
 
 }
 
-@Preview
-@Composable
-fun DefaultPreviewOfSignUpScreen() {
-    RegisterScreen()
-}
+//@Preview
+//@Composable
+//fun DefaultPreviewOfSignUpScreen() {
+//    RegisterScreen()
+//}

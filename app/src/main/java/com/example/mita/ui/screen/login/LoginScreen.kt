@@ -1,121 +1,124 @@
 package com.example.mita.ui.screen.login
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mita.R
+import com.example.mita.navigation.MitaAppRouter
 import com.example.mita.navigation.Screen
+import com.example.mita.ui.component.ButtonComponent
+import com.example.mita.ui.component.ClickableRegisterTextComponent
+import com.example.mita.ui.component.DividerTextComponent
+import com.example.mita.ui.component.HeadingTextComponent
+import com.example.mita.ui.component.NormalTextComponent
+import com.example.mita.ui.component.PasswordTextFieldComponent
+import com.example.mita.ui.component.TextFieldComponent
+import com.example.mita.ui.component.UnderLineNormalTextComponent
+import com.example.mita.ui.screen.login.data.LoginUIEvent
+import com.example.mita.ui.screen.login.data.LoginViewModel
 
 @Composable
-fun LoginScreen(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-){
+fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
+    val context = LocalContext.current
 
-    val edit = remember{ mutableStateOf("") }
-
-    Box(modifier = modifier.fillMaxSize()){
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
+                .background(Color.White)
+                .padding(28.dp)
         ) {
-            Text(
-                stringResource(id = R.string.login),
-                style = TextStyle(
-                    fontSize = 28.sp,
-                    fontFamily = null,
-                    fontWeight = FontWeight(500)
-                )
-            )
-
-            TextField(
-                value = edit.value,
-                onValueChange = { edit.value = it },
-                label = {
-                        Text(
-                            text = stringResource(id = R.string.emailText)
-                        )
-                },
-                singleLine = true,
-                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "") },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.White,
-                )
-            )
-
-            TextField(
-                value ="",
-                onValueChange = {  },
-                label = {
-                    Text(
-                        text = stringResource(id = R.string.passwordText)
-                    )
-                },
-                singleLine = true,
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "") },
-                trailingIcon = { Icon(painter = painterResource(id = R.drawable.baseline_eye_24), contentDescription = "")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White,
-                    disabledContainerColor = Color.White,
-                )
-            )
-
-            Button(onClick = { navController.navigate(Screen.Home.route) },
-                shape = MaterialTheme.shapes.large,
-                colors = ButtonDefaults.buttonColors(),
-                modifier = Modifier
-                    .padding(8.dp)
+                    .fillMaxSize()
+                    .background(Color.White)
             ) {
+                NormalTextComponent(value = stringResource(id = R.string.app_name))
+                HeadingTextComponent(value = stringResource(id = R.string.welcome_back))
+                Spacer(modifier = Modifier.height(20.dp))
+                TextFieldComponent(
+                    labelValue = stringResource(id = R.string.email),
+                    painterResource = painterResource(id = R.drawable.baseline_email_24),
+                    keyboardType = KeyboardType.Email,
+                    onTextSelected = {
+                        loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                    },
+                    errorStatus = loginViewModel.loginUIState.value.emailError,
+                    errorMsg = loginViewModel.loginUIState.value.emailMsgError
 
-                Text(
-                    stringResource(id = R.string.login)
                 )
 
+                PasswordTextFieldComponent(
+                    labelValue = stringResource(id = R.string.password),
+                    painterResource = painterResource(id = R.drawable.baseline_lock_24),
+                    onTextSelected = {
+                        loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+
+                    },
+                    errorStatus = loginViewModel.loginUIState.value.passwordError,
+                    errorMsg = loginViewModel.loginUIState.value.passwordMsgError
+
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                UnderLineNormalTextComponent(
+                    value = stringResource(id = R.string.forget_password),
+                    onTextSelected = {
+                    })
+
+                Spacer(modifier = Modifier.height(200.dp))
+
+                ButtonComponent(
+                    value = stringResource(id = R.string.login),
+                    onButtonClicked = {
+                        loginViewModel.onEvent(LoginUIEvent.LogInButtonClicked)
+                        loginViewModel.errorMsgServer(context)
+                    }, true
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                DividerTextComponent()
+
+                ClickableRegisterTextComponent(
+                    value = stringResource(id = R.string.dont_have_account),
+                    onTextSelected = {
+                        MitaAppRouter.navigateTo(Screen.RegisterScreen)
+                    })
             }
         }
+
+        if (loginViewModel.loginInProgress.value) {
+            CircularProgressIndicator()
+        }
     }
+
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun LoginScreenPreview(){
-//    LoginScreen()
-//}
+
+@Preview
+@Composable
+fun DefaultPreviewOfLoginScreen() {
+    LoginScreen()
+}

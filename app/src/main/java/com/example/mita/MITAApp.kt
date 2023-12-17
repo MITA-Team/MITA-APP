@@ -1,5 +1,6 @@
 package com.example.mita
 
+import android.app.Application
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
@@ -31,6 +32,7 @@ import com.example.mita.ui.screen.login.LoginScreen
 import com.example.mita.ui.screen.profile.ProfileScreen
 import com.example.mita.ui.screen.register.RegisterScreen
 import com.example.mita.ui.screen.welcome.WelcomeScreen
+import com.google.firebase.FirebaseApp
 
 @Composable
 fun MITAApp(
@@ -44,9 +46,9 @@ fun MITAApp(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            if (currentRoute != Screen.Welcome.route &&
-                currentRoute != Screen.Login.route &&
-                currentRoute != Screen.Register.route) {
+            if (currentRoute != Screen.WelcomeScreen.toString() &&
+                currentRoute != Screen.LoginScreen.toString() &&
+                currentRoute != Screen.RegisterScreen.toString()) {
                 BottomBar(navController)
             }
         },
@@ -59,17 +61,17 @@ fun MITAApp(
                 .statusBarsPadding()
         ) {
             navigation(
-                startDestination = Screen.Welcome.route,
+                startDestination = Screen.WelcomeScreen.toString(),
                 route = "main"
             ){
-                composable(route = Screen.Home.route) {
-                    HomeScreen()
+                composable(route = Screen.HomeScreen.toString()) {
+                    HomeScreen(navController)
                 }
-                composable(route = Screen.Activity.route) {
+                composable(route = Screen.ActivityScreen.toString()) {
                     ActivityScreen()
                 }
                 composable(
-                    route = Screen.Profile.route
+                    route = Screen.ProfileScreen.toString()
                 ) {
                     ProfileScreen()
                 }
@@ -77,26 +79,34 @@ fun MITAApp(
 
             //without bottom bar
             navigation(
-                startDestination = Screen.Welcome.route,
+                startDestination = Screen.WelcomeScreen.toString(),
                 route = "authentication"
             ) {
                 composable(
-                    route = Screen.Welcome.route
+                    route = Screen.WelcomeScreen.toString()
                 ) {
                     WelcomeScreen(navController)
                 }
                 composable(
-                    route = Screen.Login.route
+                    route = "LoginScreen"
                 ) {
-                    LoginScreen(navController)
+                    LoginScreen(/*navController*/)
                 }
                 composable(
-                    route = Screen.Register.route
+                    route = Screen.RegisterScreen.toString()
                 ) {
                     RegisterScreen(navController)
                 }
             }
         }
+    }
+}
+
+class MITAApp: Application(){
+    override fun onCreate() {
+        super.onCreate()
+
+        FirebaseApp.initializeApp(this)
     }
 }
 
@@ -114,17 +124,17 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.menu_home),
                 icon = Icons.Default.Home,
-                screen = Screen.Home
+                screen = Screen.HomeScreen
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_activity),
                 icon = Icons.Default.Face,
-                screen = Screen.Activity
+                screen = Screen.ActivityScreen
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_profile),
                 icon = Icons.Default.Person,
-                screen = Screen.Profile
+                screen = Screen.ProfileScreen
             ),
         )
         navigationItems.map { item ->
@@ -136,9 +146,9 @@ private fun BottomBar(
                     )
                 },
                 label = { Text(item.title) },
-                selected = currentRoute == item.screen.route,
+                selected = currentRoute == item.screen.toString(),
                 onClick = {
-                    navController.navigate(item.screen.route) {
+                    navController.navigate(item.screen.toString()) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
