@@ -90,7 +90,7 @@ fun MITAApp(
                 composable(
                     route = "LoginScreen"
                 ) {
-                    LoginScreen(/*navController*/)
+                    LoginScreen()
                 }
                 composable(
                     route = Screen.RegisterScreen.toString()

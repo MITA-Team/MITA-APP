@@ -140,7 +140,8 @@ fun RegisterScreen(
                     value = stringResource(id = R.string.already_login),
                     onTextSelected = {
                         navController.navigate(Screen.LoginScreen.toString())
-                    })
+                    }
+                )
             }
         }
 
