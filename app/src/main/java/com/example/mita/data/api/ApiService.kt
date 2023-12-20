@@ -2,31 +2,23 @@ package com.example.mita.data.api
 
 import com.example.mita.data.response.LoginResponse
 import com.example.mita.data.response.QuestionResponse
+import com.example.mita.data.response.RegisterRequest
 import com.example.mita.data.response.RegisterResponse
 import com.example.mita.data.response.TherapyResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
-import java.util.Date
 
 interface ApiService {
-    @FormUrlEncoded
     @POST("users/register")
     suspend fun register(
-        @Field("username") username: String,
-        @Field("email") email: String,
-        @Field("domicile") domicile: String,
-        @Field("birthDate") birthDate: Date,
-        @Field("password") password: String,
-        @Field("confirmPass") confirmPass: String
+        @Body registerRequest: RegisterRequest
     ): Response<RegisterResponse>
 
     // Fungsi login tetap sama

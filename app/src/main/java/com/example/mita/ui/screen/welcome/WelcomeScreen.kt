@@ -51,7 +51,7 @@ fun WelcomeScreen(
             
 
             Image(
-                painter = painterResource(id = R.drawable.ballon),
+                painter = painterResource(id = R.drawable.ic_mita),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(200.dp)

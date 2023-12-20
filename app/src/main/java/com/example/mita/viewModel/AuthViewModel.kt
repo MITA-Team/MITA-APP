@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mita.data.api.ApiConfig
+import com.example.mita.data.response.RegisterRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,12 +14,12 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.awaitResponse
-import java.util.Date
 
 class AuthViewModel : ViewModel() {
     private val apiService = ApiConfig.createApiService()
 
     private val _registrationResult = MutableLiveData<Boolean>()
+    val registrationResult: LiveData<Boolean> get() = _registrationResult
 
     private val _loginResult = MutableStateFlow(false)
     val loginResult: StateFlow<Boolean> get() = _loginResult
@@ -32,15 +33,10 @@ class AuthViewModel : ViewModel() {
 
 
     fun register(
-        username: String,
-        email: String,
-        domicile: String,
-        birthDate: Date,
-        password: String,
-        confirmPass: String
+        registerRequest: RegisterRequest
     ) = viewModelScope.launch {
         try {
-            val response = apiService.register(username, email, domicile, birthDate, password, confirmPass)
+            val response = apiService.register(registerRequest)
             println("Response: $response")
             // Jika respons berhasil, tetapkan nilai sesuai dengan kebutuhan
             _registrationResult.value = true // atau sesuai dengan respons yang benar

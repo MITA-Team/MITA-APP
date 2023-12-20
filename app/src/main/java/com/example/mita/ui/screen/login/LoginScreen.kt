@@ -89,11 +89,11 @@ fun LoginScreen(
 
 
         // Tampilkan pesan berdasarkan respons dari server
-        when (val result = authViewModel.loginResult.collectAsState().value) {
-            true -> Text("Login Successful!")
-            false -> Text("Login Failed")
-            else -> {}
-        }
+//        when (val result = authViewModel.loginResult.collectAsState().value) {
+//            true -> Text("Login Successful!")
+//            false -> Text("Login Failed")
+//            else -> {}
+//        }
     }
 }
 

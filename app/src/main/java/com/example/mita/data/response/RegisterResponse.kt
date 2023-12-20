@@ -1,7 +1,6 @@
 package com.example.mita.data.response
 
 import com.google.gson.annotations.SerializedName
-import java.util.Date
 
 data class RegisterResponse(
 
@@ -17,25 +16,27 @@ data class RegisterResponse(
 
 data class Datareg(
 
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("username")
+	val username: String,
+
+	@field:SerializedName("email")
+	val email: String,
+
+	@field:SerializedName("domicile")
+	val domicile: String,
+
+	@field:SerializedName("birthDate")
+	val birthDate: String,
+
 	@field:SerializedName("password")
 	val password: String,
 
 	@field:SerializedName("confirmPass")
 	val confirmPass: String,
 
-	@field:SerializedName("domicile")
-	val domicile: String,
 
-	@field:SerializedName("id")
-	val id: String,
-
-	@field:SerializedName("birthDate")
-	val birthDate: Date,
-
-	@field:SerializedName("email")
-	val email: String,
-
-	@field:SerializedName("username")
-	val username: String
 )
 

@@ -28,10 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mita.R
+import com.example.mita.data.response.RegisterRequest
 import com.example.mita.viewModel.AuthViewModel
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +41,7 @@ fun RegisterScreen(
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var domicile by remember { mutableStateOf("") }
-    var birthDate by remember { mutableStateOf(Date()) }
+    var birthDate by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPass by remember { mutableStateOf("") }
 
@@ -61,12 +60,8 @@ fun RegisterScreen(
 
     val datePickerDialog = DatePickerDialog(
         context, { d, year, month, day ->
-            val selectedDate = Calendar.getInstance().apply {
-                set(Calendar.YEAR, year)
-                set(Calendar.MONTH, month)
-                set(Calendar.DAY_OF_MONTH, day)
-            }.time
-            birthDate = selectedDate
+            val bulan = month + 1
+            birthDate = "$day - $month - $year"
         }, year, month, day
     )
 
@@ -110,8 +105,8 @@ fun RegisterScreen(
 
         Row {
             TextField(
-                value = SimpleDateFormat("dd/MM/yyyy").format(birthDate),
-                onValueChange = {},
+                value = birthDate,
+                onValueChange = {birthDate = it},
                 label = { Text("Birthdate") },
                 modifier = Modifier
                     .weight(1f)
@@ -154,8 +149,16 @@ fun RegisterScreen(
 
         Button(
             onClick = {
+                val registerRequest = RegisterRequest(
+                    username = username,
+                    email = email,
+                    domicile = domicile,
+                    birthDate = birthDate,
+                    password = password,
+                    confirmPass = confirmPass
+                )
                 // Panggil fungsi register dari ViewModel
-                authViewModel.register(username, email, domicile, birthDate, password, confirmPass)
+                authViewModel.register(registerRequest)
             },
             modifier = Modifier
                 .fillMaxWidth()
