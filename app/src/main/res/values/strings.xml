@@ -26,4 +26,6 @@
     <string name="menu_activity">Activity\n</string>
     <string name="menu_profile">Profile</string>
     <string name="google_cloud_server_client_id">Google Server</string>
+    <string name="title_login_page">Login</string>
+    <string name="message_login_page">Selamat Datang di MITA App Teman pertumbuh kembangan anak, silahkan Login terlebih dahulu</string>
 </resources>

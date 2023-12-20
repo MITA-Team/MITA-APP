@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -32,6 +33,7 @@ import com.example.mita.ui.screen.login.LoginScreen
 import com.example.mita.ui.screen.profile.ProfileScreen
 import com.example.mita.ui.screen.register.RegisterScreen
 import com.example.mita.ui.screen.welcome.WelcomeScreen
+import com.example.mita.viewModel.AuthViewModel
 import com.google.firebase.FirebaseApp
 
 @Composable
@@ -90,12 +92,12 @@ fun MITAApp(
                 composable(
                     route = "LoginScreen"
                 ) {
-                    LoginScreen()
+                    LoginScreen(authViewModel = AuthViewModel(), navController)
                 }
                 composable(
                     route = Screen.RegisterScreen.toString()
                 ) {
-                    RegisterScreen(navController)
+                    RegisterScreen(navController = NavController, authViewModel = AuthViewModel())
                 }
             }
         }
