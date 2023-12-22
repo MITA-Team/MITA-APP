@@ -19,6 +19,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -40,12 +42,17 @@ import com.example.mita.R
 import com.example.mita.navigation.Screen
 import com.example.mita.ui.component.ListItem
 import com.example.mita.ui.theme.poppinsFont
+import com.example.mita.viewModel.QuestionViewModel
 
 @Composable
 fun ResultScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    questionViewModel: QuestionViewModel = viewModel()
 ){
+
+    val answeredQuestions = questionViewModel.answeredQuestions.observeAsState(emptyMap())
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -76,7 +83,7 @@ fun ResultScreen(
                             .padding(8.dp)
                     )
                     Text(
-                        text = "1",
+                        text = "4",
                         fontSize = 32.sp,
                         fontFamily = poppinsFont,
                         fontWeight = FontWeight.SemiBold,
@@ -85,7 +92,7 @@ fun ResultScreen(
                             .align(Alignment.CenterVertically)
                     )
                     Text(
-                        text = "/ 30",
+                        text = "/ 15",
                         fontFamily = poppinsFont,
                         fontWeight = FontWeight.Normal,
                         modifier = Modifier
@@ -105,7 +112,7 @@ fun ResultScreen(
                                 containerColor = Color.White
                             ),
                             modifier = Modifier
-                                .size(width = 120.dp, height = 60.dp)
+                                .size(width = 120.dp, height = 100.dp)
                                 .align(Alignment.End)
                         ) {
                             Text(
@@ -117,24 +124,16 @@ fun ResultScreen(
                                     .align(Alignment.CenterHorizontally),
                                 textAlign = TextAlign.Center
                             )
-                        }
 
-                        Spacer(modifier = Modifier.padding(8.dp))
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = Color.White
-                            ),
-                            modifier = Modifier
-                                .size(width = 120.dp, height = 60.dp)
-                                .align(Alignment.End)
-                        ) {
+
                             Text(
-                                text = "Delay",
+                                text = "Delay Social",
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(4.dp)
                                     .align(Alignment.CenterHorizontally),
                                 textAlign = TextAlign.Center
                             )
+
                         }
                     }
                 }

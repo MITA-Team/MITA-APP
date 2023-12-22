@@ -92,6 +92,15 @@ fun HomeScreen(
                                 .align(Alignment.CenterHorizontally),
                             textAlign = TextAlign.Center,
                         )
+                        Text(
+                            text = "Belum Test",
+                            fontFamily = poppinsFont,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .align(Alignment.CenterHorizontally),
+                            textAlign = TextAlign.Center,
+                        )
                     }
 
                     Spacer(modifier = Modifier.padding(16.dp))
@@ -128,7 +137,7 @@ fun HomeScreen(
 
                             Spacer(modifier = Modifier.padding(24.dp))
                             Text(
-                                text = "1",
+                                text = "0",
                                 fontFamily = poppinsFont,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 30.sp
@@ -156,11 +165,6 @@ fun HomeScreen(
                         navController.navigate(Screen.QuestionScreen.toString())
                     },
 
-            )
-            ListItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
             )
         }
 

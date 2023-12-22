@@ -55,10 +55,14 @@ fun QuestionScreen(questionViewModel: QuestionViewModel = viewModel(),  navContr
     val viewModelScope = rememberCoroutineScope()
 
 
-    LaunchedEffect(Unit) {
-        // Fetch pertanyaan saat komposisi diluncurkan
-        questionViewModel.fetchQuestions()
+    LaunchedEffect(questionViewModel.submitResult.value) {
+        val submitResult = questionViewModel.submitResult.value
+        if (submitResult != null) {
+            // Hasil sudah tersedia, navigasi ke layar hasil
+            navController.navigate(Screen.ResultScreen.toString())
+        }
     }
+
 
     Box(
         modifier = Modifier

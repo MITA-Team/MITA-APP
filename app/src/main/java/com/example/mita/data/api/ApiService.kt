@@ -42,7 +42,7 @@ interface ApiService {
     @POST("users/submit")
     suspend fun submitAnswer(
         @Body input: SubmitAnswerRequest,
-    ): SubmitResponse
+    ): Response<SubmitResponse>
 
 //    @POST("question/{id}")
 //    suspend fun getQuestionId(

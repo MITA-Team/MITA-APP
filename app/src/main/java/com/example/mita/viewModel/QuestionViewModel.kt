@@ -8,12 +8,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.mita.data.api.ApiConfig
 import com.example.mita.data.response.Input
 import com.example.mita.data.response.ListItem
 import com.example.mita.data.response.LoginResponse
 import com.example.mita.data.response.SubmitResponse
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import retrofit2.Response
 
 
 data class SubmitAnswerRequest(val input: Input)
@@ -38,6 +41,27 @@ class QuestionViewModel : ViewModel() {
 
     private val _submitResult = MutableLiveData<SubmitResult>()
     val submitResult: LiveData<SubmitResult> get() = _submitResult
+
+    private val _answerResult = MutableLiveData<String>()
+    val answerResult: LiveData<String> get() = _answerResult
+
+    private val _answeredQuestions = MutableLiveData<Map<String, Int>>()
+    val answeredQuestions: LiveData<Map<String, Int>> get() = _answeredQuestions
+
+    private var currentField: String = ""
+
+    fun setCurrentField(field: String) {
+        currentField = field
+    }
+
+    // Fungsi untuk mengupdate nilai answeredQuestions
+    fun updateAnsweredQuestions(answers: Map<String, Int>) {
+        _answeredQuestions.value = answers
+    }
+
+
+
+
 
     data class SubmitResult(
         val newResultId: String,
@@ -68,6 +92,12 @@ class QuestionViewModel : ViewModel() {
         }
     }
 
+    init {
+        viewModelScope.launch {
+            fetchQuestions()
+        }
+    }
+
     // Metode untuk mengganti pertanyaan dengan ID berikutnya
     fun nextQuestion() {
         val questionSize = _questions.value.size
@@ -84,7 +114,7 @@ class QuestionViewModel : ViewModel() {
             currentQuestion?.let { question ->
                 // Memperbarui nilai jawaban untuk pertanyaan saat ini
                 val currentField = when (_currentQuestionIndex.intValue) {
-                    in 0 .. 10 -> "A${_currentQuestionIndex.intValue + 1}"
+                    in 0..10 -> "A${_currentQuestionIndex.intValue + 1}"
                     11 -> "Age"
                     12 -> "Sex"
                     13 -> "Jaudience"
@@ -101,43 +131,52 @@ class QuestionViewModel : ViewModel() {
             // Jika semua pertanyaan telah dijawab, kirim jawaban ke API
             if (_answers.value.size == _questions.value.size) {
                 // Membuat objek model untuk data yang akan dikirim
-                val submitAnswerRequest = SubmitAnswerRequest(input = Input(
-                    A1 = _answers.value["A1"] ?: 0,
-                    A2 = _answers.value["A2"] ?: 0,
-                    A3 = _answers.value["A3"] ?: 0,
-                    A4 = _answers.value["A4"] ?: 0,
-                    A5 = _answers.value["A5"] ?: 0,
-                    A6 = _answers.value["A6"] ?: 0,
-                    A7 = _answers.value["A7"] ?: 0,
-                    A8 = _answers.value["A8"] ?: 0,
-                    A9 = _answers.value["A9"] ?: 0,
-                    A10 = _answers.value["A10"] ?: 0,
-                    Age = _answers.value["Age"] ?: 0,
-                    Sex = _answers.value["Sex"] ?: 0,
-                    Jaudience = _answers.value["Jaudience"] ?: 0,
-                    Family_mem_with_ASD = _answers.value["Family_mem_with_ASD"] ?: 0,
-                    Who_completed_the_test = _answers.value["Who_completed_the_test"] ?: 0
-                ))
+                val submitAnswerRequest = SubmitAnswerRequest(
+                    input = Input(
+                        A1 = _answers.value["A1"] ?: 0,
+                        A2 = _answers.value["A2"] ?: 0,
+                        A3 = _answers.value["A3"] ?: 0,
+                        A4 = _answers.value["A4"] ?: 0,
+                        A5 = _answers.value["A5"] ?: 0,
+                        A6 = _answers.value["A6"] ?: 0,
+                        A7 = _answers.value["A7"] ?: 0,
+                        A8 = _answers.value["A8"] ?: 0,
+                        A9 = _answers.value["A9"] ?: 0,
+                        A10 = _answers.value["A10"] ?: 0,
+                        Age = _answers.value["Age"] ?: 0,
+                        Sex = _answers.value["Sex"] ?: 0,
+                        Jaudience = _answers.value["Jaudience"] ?: 0,
+                        Family_mem_with_ASD = _answers.value["Family_mem_with_ASD"] ?: 0,
+                        Who_completed_the_test = _answers.value["Who_completed_the_test"] ?: 0
+                    )
+                )
+
+                _answers.value[currentField] = if (isYes) 1 else 0
+                updateAnsweredQuestions(_answers.value)
 
                 // Memanggil fungsi API untuk mengirim jawaban
-                val response = ApiConfig.createApiService().submitAnswer(submitAnswerRequest)
+                val response: Response<SubmitResponse> =
+                    ApiConfig.createApiService().submitAnswer(submitAnswerRequest)
 
+                if (response.isSuccessful) {
+                    val newResultId = response.body()?.data?.newResultId ?: ""
+                    // Simpan ID ke _answerResult untuk digunakan di ResultScreen
+                    _answerResult.value = newResultId
 
-                // Reset jawaban setelah dikirim
-                _answers.value.clear()
+                    // Reset jawaban setelah dikirim
+                    _answers.value.clear()
+                } else {
+                    // Tangani kasus ketika respons tidak berhasil
+                    Log.e("SubmitAnswer", "Error: ${response.code()} - ${response.message()}")
+                }
             }
 
             // Pindah ke pertanyaan berikutnya setelah jawaban disimpan
             nextQuestion()
         } catch (e: Exception) {
-            // Handle error with more details
+            // Tangani error dengan lebih detail
             Log.e("QuestionViewModel", "Error submitting answer", e)
-
-            if (e is HttpException) {
-                val responseBody = e.response()?.errorBody()?.string()
-                Log.e("QuestionViewModel", "Error response body: $responseBody")
-            }
-
+            // Bersihkan jawaban jika terjadi error
             _answers.value.clear()
         }
     }
