@@ -16,12 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.mita.R
+import com.example.mita.ui.theme.poppinsFont
 
 @Composable
 fun ListItem(
@@ -34,7 +37,7 @@ fun ListItem(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = Color.White,
         ),
     ) {
         Row(
@@ -45,7 +48,7 @@ fun ListItem(
         ) {
 
             AsyncImage(
-                model = "",
+                model = R.drawable.exam,
                 contentDescription = "banner",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -60,7 +63,9 @@ fun ListItem(
             ) {
 
                 Text(
-                    text = "Judul",
+                    text = "Test",
+                    fontFamily = poppinsFont,
+                    fontWeight = FontWeight.Bold,
                     maxLines = 2,
                     color = MaterialTheme.colorScheme.onBackground,
                     overflow = TextOverflow.Ellipsis,
@@ -73,7 +78,9 @@ fun ListItem(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Deskripsi",
+                    text = "Bila Anda belum Melakukan Test Silahkan Test",
+                    fontFamily = poppinsFont,
+                    fontWeight = FontWeight.Normal,
                     maxLines = 2,
                     color = MaterialTheme.colorScheme.onBackground,
                     overflow = TextOverflow.Ellipsis,

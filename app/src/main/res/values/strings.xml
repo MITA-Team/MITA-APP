@@ -28,4 +28,13 @@
     <string name="google_cloud_server_client_id">Google Server</string>
     <string name="title_login_page">Login</string>
     <string name="message_login_page">Selamat Datang di MITA App Teman pertumbuh kembangan anak, silahkan Login terlebih dahulu</string>
+    <string name="profile_photo">Foto Profile</string>
+    <string name="ajiananta">rehan</string>
+    <string name="name">Nama</string>
+    <string name="domisili">Domisili</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="dev_birthdate">11-12-23</string>
+    <string name="asal">Cikarang</string>
+    <string name="email_contoh">rehan@gmail.com</string>
+    <string name="therapy">Therapy</string>
 </resources>

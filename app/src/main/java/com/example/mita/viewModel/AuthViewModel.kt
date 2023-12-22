@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mita.data.api.ApiConfig
 import com.example.mita.data.response.RegisterRequest
+import com.example.mita.data.response.UserDataResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,6 +17,8 @@ import org.json.JSONObject
 import retrofit2.awaitResponse
 
 class AuthViewModel : ViewModel() {
+
+
     private val apiService = ApiConfig.createApiService()
 
     private val _registrationResult = MutableLiveData<Boolean>()
@@ -57,7 +60,9 @@ class AuthViewModel : ViewModel() {
             val response = apiService.login(requestBody).awaitResponse()
 
             if (response.isSuccessful) {
+
                 Log.d("AuthViewModel", "Login successful") // Log message when login is successful
+
             }else{
                 Log.e("AuthViewModel", "Login failed: ${response.errorBody()?.string()}")
             }

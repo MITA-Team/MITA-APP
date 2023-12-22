@@ -19,13 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mita.R
 import com.example.mita.navigation.Screen
+import com.example.mita.ui.theme.poppinsFont
 
 @Composable
 fun WelcomeScreen(
@@ -51,7 +56,7 @@ fun WelcomeScreen(
             
 
             Image(
-                painter = painterResource(id = R.drawable.ic_mita),
+                painter = painterResource(id = R.drawable.ic_mita_no_bg),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(200.dp)
@@ -60,9 +65,18 @@ fun WelcomeScreen(
             Text(
                 "Welcome To",
                 fontSize = 32.sp,
+                fontFamily = poppinsFont,
+                fontWeight = FontWeight.Normal
             )
 
             Spacer(modifier = Modifier.padding(8.dp))
+
+            Text(
+                "MITA APP",
+                fontSize = 32.sp,
+                fontFamily = poppinsFont,
+                fontWeight = FontWeight.Bold
+            )
 
             /* Image(painter = painterResource(id = R.drawable.logo_mita),
                 contentDescription = null,
@@ -75,16 +89,21 @@ fun WelcomeScreen(
             Row {
                 Button(
                     onClick = {
-                        navController.navigate("LoginScreen")
+                        navController.navigate(Screen.LoginScreen.toString())
                     },
                     shape = MaterialTheme.shapes.large,
-                    colors = ButtonDefaults.buttonColors(),
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(id = R.color.orenButton)
+                    ),
                     modifier = Modifier
                         .padding(8.dp)
                 ) {
 
                     Text(
-                        "Log In"
+                        "Log In",
+                        color = Color.White, // Warna teks
+                        fontFamily = poppinsFont,
+                        fontWeight = FontWeight.SemiBold
                     )
 
                 }
@@ -94,13 +113,18 @@ fun WelcomeScreen(
                         navController.navigate(Screen.RegisterScreen.toString())
                     },
                     shape = MaterialTheme.shapes.large,
-                    colors = ButtonDefaults.buttonColors(),
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(id = R.color.orenButton)
+                    ),
                     modifier = Modifier
                         .padding(8.dp)
                 ) {
 
                     Text(
-                        "Sign Up"
+                        "Sign Up",
+                        color = Color.White, // Warna teks
+                        fontFamily = poppinsFont,
+                        fontWeight = FontWeight.SemiBold
                     )
 
                 }
@@ -110,8 +134,8 @@ fun WelcomeScreen(
 
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun RegisterScreenPreview(){
-//    WelcomeScreen(navCont)
-//}
+@Preview(showBackground = true)
+@Composable
+fun RegisterScreenPreview(){
+    WelcomeScreen(navController = rememberNavController())
+}

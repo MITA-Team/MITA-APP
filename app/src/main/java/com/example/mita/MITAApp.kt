@@ -31,7 +31,10 @@ import com.example.mita.ui.screen.activity.ActivityScreen
 import com.example.mita.ui.screen.home.HomeScreen
 import com.example.mita.ui.screen.login.LoginScreen
 import com.example.mita.ui.screen.profile.ProfileScreen
+import com.example.mita.ui.screen.question.QuestionScreen
 import com.example.mita.ui.screen.register.RegisterScreen
+import com.example.mita.ui.screen.result.ResultScreen
+import com.example.mita.ui.screen.therapy.TherapyScreen
 import com.example.mita.ui.screen.welcome.WelcomeScreen
 import com.example.mita.viewModel.AuthViewModel
 import com.google.firebase.FirebaseApp
@@ -48,10 +51,15 @@ fun MITAApp(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            if (currentRoute != Screen.WelcomeScreen.toString() &&
-                currentRoute != Screen.LoginScreen.toString() &&
-                currentRoute != Screen.RegisterScreen.toString()) {
+            if (currentRoute !in listOf(
+                    Screen.WelcomeScreen.toString(),
+                    Screen.LoginScreen.toString(),
+                    Screen.RegisterScreen.toString()
+                )
+            ) {
                 BottomBar(navController)
+            } else {
+                null // Tidak menampilkan bottom bar di halaman welcome, login, dan register
             }
         },
     ) { innerPadding ->
@@ -70,12 +78,12 @@ fun MITAApp(
                     HomeScreen(navController)
                 }
                 composable(route = Screen.ActivityScreen.toString()) {
-                    ActivityScreen()
+                    ActivityScreen(navController = rememberNavController())
                 }
                 composable(
                     route = Screen.ProfileScreen.toString()
                 ) {
-                    ProfileScreen()
+                    ProfileScreen(onBackClick = {}, viewModel = AuthViewModel())
                 }
             }
 
@@ -90,14 +98,29 @@ fun MITAApp(
                     WelcomeScreen(navController)
                 }
                 composable(
-                    route = "LoginScreen"
+                    route = Screen.LoginScreen.toString()
                 ) {
-                    LoginScreen(authViewModel = AuthViewModel(), navController)
+                    LoginScreen(authViewModel = AuthViewModel(), navController = navController)
                 }
                 composable(
                     route = Screen.RegisterScreen.toString()
                 ) {
                     RegisterScreen(navController = NavController, authViewModel = AuthViewModel())
+                }
+                composable(
+                    route = Screen.QuestionScreen.toString()
+                ) {
+                    QuestionScreen(navController = navController)
+                }
+                composable(
+                    route = Screen.TherapyScreen.toString()
+                ) {
+                    TherapyScreen(navController = rememberNavController())
+                }
+                composable(
+                    route = Screen.ResultScreen.toString()
+                ) {
+                    ResultScreen(navController = navController)
                 }
             }
         }
@@ -131,7 +154,7 @@ private fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.menu_activity),
                 icon = Icons.Default.Face,
-                screen = Screen.ActivityScreen
+                screen = Screen.TherapyScreen
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_profile),
